@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tekglide Google US Rank Checker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">Tekglide SEO operations</p>
+        <h1>Tekglide Google US Rank Checker</h1>
+        <p class="lede">Check one approved landing page against Google US organic results.</p>
+      </div>
+      <span class="local-pill">Local only</span>
+    </header>
+
+    <section class="layout">
+      <div class="primary-column">
+        <section class="panel checklist-panel" aria-labelledby="checklist-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Before you start</p>
+              <h2 id="checklist-title">Run checklist</h2>
+            </div>
+            <span class="step-label">1 / 2</span>
+          </div>
+          <p class="note">Live network verification confirms your USA connection before checking.</p>
+          
+          <div id="vpn-badge" style="margin: 12px 0 16px; padding: 10px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: space-between; background: #f8fafc; border: 1px solid #cbd5e1;">
+            <span id="vpn-badge-text">🔍 Detecting VPN & Location...</span>
+            <button type="button" id="vpn-badge-refresh" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 3px 10px; font-size: 12px; cursor: pointer; color: #334155; font-weight: 600;">Check IP</button>
+          </div>
+
+          <label class="check-row">
+            <input type="checkbox" data-check="vpn">
+            <span>Confirm that ExpressVPN shows USA: Connected.</span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox" data-check="location">
+            <span>Google location is USA</span>
+          </label>
+          <label class="check-row">
+            <input type="checkbox" data-check="captcha">
+            <span>I understand CAPTCHA may require manual verification</span>
+          </label>
+        </section>
+
+        <section class="panel form-panel" aria-labelledby="keyword-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Approved targets</p>
+              <h2 id="keyword-title">Choose a keyword</h2>
+            </div>
+            <span class="step-label">2 / 2</span>
+          </div>
+          <label class="field-label" for="keyword">Keyword</label>
+          <select id="keyword">
+            <option value="">Select one keyword</option>
+            {% for target in targets %}
+            <option value="{{ target.keyword }}" data-target-url="{{ target.target_url }}">{{ target.keyword }}</option>
+            {% endfor %}
+          </select>
+          <label class="field-label" for="target-url">Approved exact target URL</label>
+          <input id="target-url" type="url" readonly placeholder="The approved URL will appear here">
+          <button id="check-button" class="primary-button" type="button" disabled>Check Rank</button>
+          <p id="form-error" class="error-message" role="alert" hidden></p>
+        </section>
+
+        <section class="panel progress-panel" aria-labelledby="progress-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Live activity</p>
+              <h2 id="progress-title">Progress</h2>
+            </div>
+            <span id="job-indicator" class="status-dot idle">Ready</span>
+          </div>
+          <ol id="progress-list" class="progress-list">
+            <li>Ready to check one keyword.</li>
+          </ol>
+          <p id="captcha-notice" class="captcha-notice" hidden>CAPTCHA detected. Solve it manually in the visible Chrome window, then leave Chrome open.</p>
+        </section>
+
+        <section id="result-card" class="panel result-panel" aria-labelledby="result-title" hidden>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Latest check</p>
+              <h2 id="result-title">Result</h2>
+            </div>
+            <span id="result-status" class="result-badge">-</span>
+          </div>
+          <dl class="result-grid">
+            <div><dt>Keyword</dt><dd id="result-keyword">-</dd></div>
+            <div><dt>Exact target URL</dt><dd id="result-target" class="breakable">-</dd></div>
+            <div><dt>Organic position</dt><dd id="result-position">-</dd></div>
+            <div><dt>Google page</dt><dd id="result-page">-</dd></div>
+            <div><dt>Found URL</dt><dd id="result-found-url" class="breakable">-</dd></div>
+            <div><dt>Result title</dt><dd id="result-result-title">-</dd></div>
+            <div><dt>Search date and time</dt><dd id="result-datetime">-</dd></div>
+          </dl>
+        </section>
+      </div>
+
+      <aside class="panel recent-panel" aria-labelledby="recent-title">
+        <div class="section-heading" style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <p class="eyebrow">History</p>
+            <h2 id="recent-title">Recent results</h2>
+          </div>
+          <a href="/api/download" class="download-link" style="text-decoration:none; padding: 6px 12px; font-size: 13px; border-radius: 6px; background: #0284c7; color: #ffffff; font-weight: 600; display: inline-block;">Download CSV</a>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Keyword</th><th>Status</th><th>Position</th><th>Checked</th></tr></thead>
+            <tbody id="recent-results"><tr><td colspan="4" class="empty-cell">No results yet.</td></tr></tbody>
+          </table>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

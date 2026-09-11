@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+chrome_profile/
+diagnostics/
+rank_results.csv
+error.txt
