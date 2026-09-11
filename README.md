@@ -1,66 +1,147 @@
-TEKGLIDE EXACT-URL GOOGLE RANK TRACKER - VERSION 10
-===================================================
+# TekGlide Google US Rank Tracker
 
-WHAT IT DOES
-- 35 approved keywords targets.csv se read karta hai.
-- Google US parameters (hl=en, gl=us, pws=0) use karta hai.
-- Sponsored ads ignore karta hai.
-- Sirf approved exact landing URL ko match karta hai; random Tekglide blog ignore hota hai.
-- Maximum 10 Google pages check karta hai.
-- rank_results.csv mein date, time, position, page, title aur URL save karta hai.
+A Python and Selenium-based rank-tracking application that checks the organic Google US position of approved TekGlide landing pages. It includes a Flask dashboard, exact URL matching, location verification, CSV reporting, and a shareable local interface.
 
-LOCAL WEB APP
-- Local Flask interface one keyword at a time check karta hai.
-- App sirf 127.0.0.1 par available hai; Chrome/Selenium job button click ke baad hi start hoti hai.
-- run_local_app.bat double-click karein; browser automatically http://127.0.0.1:5000/ kholega.
-- Flask page responsive rahega jab Selenium visible Chrome mein kaam karega.
+## Key Features
 
-HOW TO RUN
-1. ZIP ko Extract All karein.
-2. ExpressVPN USA - New York connect karein.
-3. run_tracker.bat double-click karein.
-4. First run par Selenium install hoga; baad ke runs par dobara install nahi hoga.
-5. CAPTCHA aaye to Chrome mein manually solve karein. Chrome window band na karein.
-6. Run complete hone par rank_results.csv isi folder mein milegi.
+* Tracks approved commercial keywords from `targets.csv`
+* Searches up to 100 Google organic results
+* Uses Google US search parameters
+* Matches exact approved landing-page URLs
+* Excludes advertisements and unrelated TekGlide pages
+* Verifies the active IP location before running a search
+* Displays live progress through a Flask dashboard
+* Saves ranking history to `rank_results.csv`
+* Supports manual CAPTCHA verification when required
+* Provides a LocalTunnel script for sharing the dashboard
 
-IMPORTANT
-- Google rankings session, location, time, device aur personalization se change ho sakti hain.
-- Automated Chrome aur aapke personal Chrome mein result order different ho sakta hai.
-- Tool CAPTCHA bypass nahi karta.
-- Hundreds of automated Google searches CAPTCHA/IP blocks trigger kar sakti hain. Slow testing karein.
-- targets.csv ko Excel mein edit/save kiya ja sakta hai. Headers keyword,target_url same rakhein.
+## Technology Stack
 
-TEST FIRST
-Single-keyword test mode targets.csv ko change nahi karta. Project folder mein PowerShell khol kar run karein:
+* Python 3
+* Flask
+* Selenium WebDriver
+* HTML5
+* CSS3
+* JavaScript
+* CSV data storage
+* LocalTunnel
 
-	.venv\Scripts\python.exe rank_tracker.py --test-wix
+## Project Structure
 
-Ya run_tracker.bat ko argument ke saath run karein:
+```text
+tekglide-google-rank-tracker/
+├── static/
+│   ├── app.js
+│   └── style.css
+├── templates/
+│   └── index.html
+├── tests/
+│   └── test_nonbrowser.py
+├── app.py
+├── rank_tracker.py
+├── requirements.txt
+├── targets.csv
+├── run_local_app.bat
+├── run_tracker.bat
+└── share_live_link.bat
+```
 
-	run_tracker.bat --test-wix
+## Requirements
 
-Kisi bhi ek keyword ko targets.csv se read karke test karne ke liye:
+Before running the application, make sure you have:
 
-	.venv\Scripts\python.exe rank_tracker.py --test-keyword "SEO Consulting Services" --pause-after-found
+* Windows 10 or later
+* Python 3 installed
+* Google Chrome installed
+* An active internet connection
+* A US VPN connection when checking Google US rankings
 
-Test keyword: Wix Development Agency
-Expected target: https://tekglide.com/wix-development/
-Chrome mein CAPTCHA aaye to manually solve karein. Test output mein har detected organic card is format mein aayega:
+## Installation
 
-	Position | Title | URL | Ad status
+1. Download or clone this repository.
+2. Extract the project if downloaded as a ZIP file.
+3. Open the project folder.
+4. Run:
 
-Found result ko center/highlight karke Chrome khula rakhne ke liye:
+```bat
+run_local_app.bat
+```
 
-	.venv\Scripts\python.exe rank_tracker.py --test-wix --pause-after-found
+The script creates a Python virtual environment and installs the required packages automatically during the first run.
 
-Terminal mein Enter dabane ke baad Chrome close hoga.
+## Using the Dashboard
 
-Test mein exact target FOUND hone ke baad hi normal full run karein:
+1. Connect your VPN to a US location.
+2. Double-click `run_local_app.bat`.
+3. Open `http://127.0.0.1:5000/` if it does not open automatically.
+4. Select an approved keyword.
+5. Confirm the required location checks.
+6. Click **Check Rank**.
+7. If Google displays a CAPTCHA, solve it manually in the visible Chrome window.
+8. Keep Chrome open until the search is complete.
+9. Review the result on the dashboard or in `rank_results.csv`.
 
-	.venv\Scripts\python.exe rank_tracker.py
+## Command-Line Usage
 
-`--self-test` Chrome khole bina URL normalization checks chalata hai:
+Run the complete tracker:
 
-	.venv\Scripts\python.exe rank_tracker.py --self-test
+```bat
+run_tracker.bat
+```
 
-Zero organic cards milne par diagnostics/ mein complete HTML, screenshot aur JSON diagnostics save hote hain. JSON mein page URL/title, selector counts, all anchor URLs aur available data-rank values hote hain.
+Test URL normalization without opening Chrome:
+
+```bat
+.venv\Scripts\python.exe rank_tracker.py --self-test
+```
+
+Test a single keyword:
+
+```bat
+.venv\Scripts\python.exe rank_tracker.py --test-keyword "SEO Consulting Services" --pause-after-found
+```
+
+## Sharing the Local Dashboard
+
+Run:
+
+```bat
+share_live_link.bat
+```
+
+This creates a temporary public LocalTunnel URL. The application still runs on your computer, so your computer and local Flask server must remain active.
+
+## Output
+
+Completed checks are stored in `rank_results.csv`, including:
+
+* Search date and time
+* Keyword
+* Organic position
+* Google results page
+* Result title
+* Found URL
+* Approved target URL
+* Search status
+
+## Important Notes
+
+* Search rankings may vary by location, device, session, time, and personalization.
+* Google may display CAPTCHA or temporarily restrict repeated automated searches.
+* This application does not bypass CAPTCHA; manual verification may be required.
+* Run searches responsibly and avoid sending a high volume of repeated requests.
+* Review and update `targets.csv` before performing production checks.
+
+## Privacy
+
+Generated browser profiles, virtual environments, cache files, diagnostics, logs, and ranking results are excluded from the repository through `.gitignore`.
+
+## Disclaimer
+
+This project was developed for educational and internal SEO monitoring purposes. Users are responsible for complying with Google's terms and all applicable policies.
+
+## Author
+
+**Saud Ahmed**
+
+GitHub: [@Saadi84](https://github.com/Saadi84)
